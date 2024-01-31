@@ -46,7 +46,7 @@ namespace SkiServiceAPI.Services
         /// <param name="password">The Password</param>
         /// <param name="passwordHash">out Hash</param>
         /// <param name="passwordSalt">out Salt</param>
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {

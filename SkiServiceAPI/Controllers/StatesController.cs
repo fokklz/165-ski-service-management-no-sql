@@ -1,13 +1,13 @@
 ﻿using SkiServiceAPI.Common;
-using SkiServiceModels.DTOs.Requests;
-using SkiServiceModels.DTOs.Responses;
-using SkiServiceModels.Models.BSON;
+using SkiServiceModels.BSON.DTOs.Requests;
+using SkiServiceModels.BSON.DTOs.Responses;
+using SkiServiceModels.BSON.Models;
 
 namespace SkiServiceAPI.Controllers
 {
-    public class StatesController : GenericController<State, StateResponse, StateResponseAdmin, UpdateStateRequest, CreateStateRequest>
+    public class StatesController : GenericController<State, StateResponse, UpdateStateRequest, CreateStateRequest>
     {
-        public StatesController(GenericService<State, StateResponse, StateResponseAdmin, UpdateStateRequest, CreateStateRequest> service) : base(service)
+        public StatesController(GenericService<State, StateResponse, UpdateStateRequest, CreateStateRequest> service) : base(service)
         {
         }
     }

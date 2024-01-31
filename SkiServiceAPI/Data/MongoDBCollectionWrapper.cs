@@ -23,7 +23,7 @@ namespace SkiServiceAPI.Data
         public MongoDBCollectionWrapper(IMongoDatabase mongo, IMapper mapper)
         {
             _database = mongo;
-            _collection = mongo.GetCollection<T>(ToPlural(typeof(T).Name));
+            _collection = mongo.GetCollection<T>(ToPlural(typeof(T).Name.ToLower()));
 
             _mapper = mapper;
 

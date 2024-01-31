@@ -72,20 +72,20 @@ namespace SkiServiceAPI.Services
         /// <param name="token">a expired access token</param>
         /// <param name="refreshToken">a valid refresh token</param>
         /// <returns>a TaskResult containg a RefreshResult with the token information</returns>
-        public async Task<TaskResult<RefreshResult<User>>> RefreshToken(string token, string refreshToken)
+        public async Task<TaskResult<RefreshResult>> RefreshToken(string token, string refreshToken)
         {
             var principal = GetPrincipalFromExpiredToken(token);
-            if (!principal.IsSuccess) return CreateTaskResult.Error<RefreshRe>(principal);
+            if (!principal.IsSuccess) return CreateTaskResult.Error<RefreshResult>(principal);
 
             var userId = principal.Result.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            if (userId == null) return CreateTaskResult.Error<RefreshResult<User>>(ErrorKey.INVALID_CREDENTIALS);
+            if (userId == null) return CreateTaskResult.Error<RefreshResult>(ErrorKey.INVALID_CREDENTIALS);
 
             var user = await _context.Users.FindByIdAsync(ObjectId.Parse(userId));
-            if (user == null || user.RefreshToken != refreshToken) return CreateTaskResult.Error<RefreshResult<User>>(ErrorKey.INVALID_CREDENTIALS);
+            if (user == null || user.RefreshToken != refreshToken) return CreateTaskResult.Error<RefreshResult>(ErrorKey.INVALID_CREDENTIALS);
 
             var tokenData = await CreateToken(user, true);
-            return CreateTaskResult.Success(new RefreshResult<User>
+            return CreateTaskResult.Success(new RefreshResult
             {
                 TokenData = tokenData,
                 User = user

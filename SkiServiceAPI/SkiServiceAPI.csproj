@@ -19,7 +19,9 @@
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="SkiServiceModels.BSON" Version="2.2.0" />
+    <PackageReference Include="SkiServiceModels.BSON" Version="2.3.4" />
+    <PackageReference Include="SkiServiceModels.BSON.AutoMapper" Version="2.3.4" />
+    <PackageReference Include="SkiServiceModels.BSON.Extensions" Version="2.3.4" />
     <PackageReference Include="StackExchange.Redis" Version="2.7.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>

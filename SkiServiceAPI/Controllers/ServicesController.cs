@@ -1,13 +1,13 @@
 ﻿using SkiServiceAPI.Common;
-using SkiServiceModels.DTOs.Requests;
-using SkiServiceModels.DTOs.Responses;
-using SkiServiceModels.Models.BSON;
+using SkiServiceModels.BSON.DTOs.Requests;
+using SkiServiceModels.BSON.DTOs.Responses;
+using SkiServiceModels.BSON.Models;
 
 namespace SkiServiceAPI.Controllers
 {
-    public class ServicesController : GenericController<Service, ServiceResponse, ServiceResponseAdmin, UpdateServiceRequest, CreateServiceRequest>
+    public class ServicesController : GenericController<Service, ServiceResponse, UpdateServiceRequest, CreateServiceRequest>
     {
-        public ServicesController(GenericService<Service, ServiceResponse, ServiceResponseAdmin, UpdateServiceRequest, CreateServiceRequest> service) : base(service)
+        public ServicesController(GenericService<Service, ServiceResponse, UpdateServiceRequest, CreateServiceRequest> service) : base(service)
         {
         }
     }

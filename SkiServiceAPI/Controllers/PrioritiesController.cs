@@ -1,13 +1,13 @@
 ﻿using SkiServiceAPI.Common;
-using SkiServiceModels.DTOs.Requests;
-using SkiServiceModels.DTOs.Responses;
-using SkiServiceModels.Models.BSON;
+using SkiServiceModels.BSON.DTOs.Requests;
+using SkiServiceModels.BSON.DTOs.Responses;
+using SkiServiceModels.BSON.Models;
 
 namespace SkiServiceAPI.Controllers
 {
-    public class PrioritiesController : GenericController<Priority, PriorityResponse, PriorityResponseAdmin, UpdatePriorityRequest, CreatePriorityRequest>
+    public class PrioritiesController : GenericController<Priority, PriorityResponse, UpdatePriorityRequest, CreatePriorityRequest>
     {
-        public PrioritiesController(GenericService<Priority, PriorityResponse, PriorityResponseAdmin, UpdatePriorityRequest, CreatePriorityRequest> service) : base(service)
+        public PrioritiesController(GenericService<Priority, PriorityResponse, UpdatePriorityRequest, CreatePriorityRequest> service) : base(service)
         {
         }
     }

@@ -1,13 +1,12 @@
 ﻿using SkiServiceAPI.Common;
+using SkiServiceModels.BSON.Models;
 using SkiServiceModels.DTOs;
-using SkiServiceModels.Models;
-using SkiServiceModels.Models.BSON;
 
 namespace SkiServiceAPI.Interfaces
 {
     public interface ITokenService
     {
         Task<TokenData> CreateToken(User user, bool keep = true);
-        Task<TaskResult<RefreshResult<User>>> RefreshToken(string token, string refreshToken);
+        Task<TaskResult<RefreshResult>> RefreshToken(string token, string refreshToken);
     }
 }

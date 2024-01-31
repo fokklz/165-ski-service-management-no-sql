@@ -11,6 +11,7 @@ namespace SkiServiceAPI.Common
         public Exception Exception { get; set; }
         public bool IsSuccess { get; set; }
     }
+
     /// <summary>
     /// Reutrn Wrapper for all Task Results inside services to allow for better error handling
     /// and simpler implementation in controllers

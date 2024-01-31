@@ -1,19 +1,21 @@
-﻿using AutoMapper;
+﻿using Amazon.Runtime;
+using AutoMapper;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using SkiServiceAPI.Common.Enums;
 using SkiServiceAPI.Interfaces;
-using SkiServiceModels.DTOs.Responses;
+using SkiServiceAPI.Models;
+using SkiServiceModels.BSON.Interfaces.Base;
 using SkiServiceModels.Enums;
 using SkiServiceModels.Interfaces;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace SkiServiceAPI.Common
 {
-    public class GenericService<T, TResponseBase, TResponseAdmin, TUpdate, TCreate> : IBaseService<T, TResponseBase, TResponseAdmin, TUpdate, TCreate>
-        where T : class, IGenericBSONModel
-        where TResponseBase : class
-        where TResponseAdmin : class, TResponseBase
+    public class GenericService<T, TResponse, TUpdate, TCreate> : IBaseService<T, TResponse, TUpdate, TCreate>
+        where T : class, IModel
+        where TResponse : class
         where TUpdate : class
         where TCreate : class
     {
@@ -37,6 +39,7 @@ namespace SkiServiceAPI.Common
             var user = _httpContextAccessor.HttpContext?.User;
             return user?.IsInRole(RoleNames.SuperAdmin.ToString()) ?? false;
         }
+
 
         protected FilterDefinition<T> GetFilter(ObjectId id)
         {
@@ -62,16 +65,13 @@ namespace SkiServiceAPI.Common
         /// <param name="data">the data to map</param>
         /// <returns>the mapped data in the coresponding DTO</returns>
         protected TaskResult<object> Resolve<TModel>(TModel data)
-            where TModel : class, IGenericModel
+            where TModel : class, IModel
         {
-            if (IsAdmin())
+            return CreateTaskResult.Success<object>(_mapper.Map<TResponse>(data, opts =>
             {
-                return CreateTaskResult.Success<object>(_mapper.Map<TResponseAdmin>(data));
-            }
-            else
-            {
-                return CreateTaskResult.Success<object>(_mapper.Map<TResponseBase>(data));
-            }
+                opts.Items["IsAdmin"] = IsAdmin();
+                opts.Items["IsOwner"] = IsOwnerOrAdmin(data);
+            }));
         }
 
         /// <summary>
@@ -81,16 +81,41 @@ namespace SkiServiceAPI.Common
         /// <param name="data">the data to map</param>
         /// <returns>the mapped data in the coresponding DTO</returns>
         protected TaskResult<IEnumerable<object>> ResolveList<TModel>(IEnumerable<TModel> data)
-            where TModel : class, IGenericModel
+            where TModel : class, IModel
         {
-            if (IsAdmin())
+            return CreateTaskResult.Success<IEnumerable<object>>(_mapper.Map<IEnumerable<TResponse>>(data, opts =>
             {
-                return CreateTaskResult.Success<IEnumerable<object>>(_mapper.Map<IEnumerable<TResponseAdmin>>(data));
-            }
-            else
+                opts.Items["IsAdmin"] = IsAdmin();
+                opts.Items["IsOwner"] = false;
+            }));
+        }
+
+
+        /// <summary>
+        /// Wrapper for endpoints restricted to the owner of the entity (e.g. delete) beeing assigned or superadmin will pass
+        /// </summary>
+        /// <param name="id">The id of the entity in the database to check</param>
+        /// <param name="allowAdmin">set to false to disallow admins</param>
+        /// <returns>The found entity from the database if allowed else null</returns>
+        public bool IsOwnerOrAdmin<TModel>(TModel? item, bool allowAdmin = true)
+            where TModel : class, IModel
+        {
+            if(item == null) return false;
+            var user = _httpContextAccessor.HttpContext?.User;
+            var isAdmin = IsAdmin();
+            var userId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var owenerId = (item?.GetType().GetProperty("UserId")?.GetValue(item, null) ?? item?.Id)?.ToString();
+            if ((isAdmin && allowAdmin) || (!string.IsNullOrEmpty(owenerId) && userId == owenerId))
             {
-                return CreateTaskResult.Success<IEnumerable<object>>(_mapper.Map<IEnumerable<TResponseBase>>(data));
+                return true;
             }
+            return false;
+        }
+
+        public async Task<bool> IsOwnerOrAdmin(ObjectId id, bool allowAdmin = true)
+        {
+            var item = (await _context.Set<T>().FindAsync(GetFilter(id))).FirstOrDefault();
+            return IsOwnerOrAdmin(item, allowAdmin);
         }
 
         /// <summary>
@@ -129,7 +154,7 @@ namespace SkiServiceAPI.Common
         {
             var resolvedEntity = _mapper.Map<T>(entity);
 
-            _context.Set<T>().Collection.InsertOne(resolvedEntity);
+            await _context.Set<T>().Collection.InsertOneAsync(resolvedEntity);
 
             return Resolve(resolvedEntity);
         }
@@ -166,7 +191,7 @@ namespace SkiServiceAPI.Common
 
             return CreateTaskResult.Success(new DeleteResponse
             {
-                Count = 1
+                Id = id
             });
         }
     }

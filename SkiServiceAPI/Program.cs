@@ -1,10 +1,13 @@
 
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Writers;
 using SkiServiceAPI.Common;
 using SkiServiceAPI.Common.Extensions;
 using SkiServiceAPI.Data;
 using SkiServiceAPI.Interfaces;
 using SkiServiceAPI.Services;
+using SkiServiceModels.BSON.AutoMapper;
+using SkiServiceModels.Enums;
 using System.Text;
 
 namespace SkiServiceAPI
@@ -21,15 +24,18 @@ namespace SkiServiceAPI
                 options.LowercaseUrls = true;
             });
 
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            builder.Services.AddAutoMapperProfile();
             builder.Services.AddHttpContextAccessor();
 
             //Service registrations
             builder.Services.AddScoped<IMongoDBContext, MongoDBContext>();
 
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
 
-            builder.Services.AddScoped(typeof(GenericService<,,,,>));
+            builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddScoped(typeof(GenericService<,,,>));
             //builder.Services.AddScoped(typeof(IBaseService<,,,,>), typeof(GenericService<,,,,>));
 
             builder.SetupCORS();
@@ -53,6 +59,7 @@ namespace SkiServiceAPI
 
             app.MapControllers();
 
+            SeedDatabase(app.Services).Wait();
 
             app.Run();
         }
@@ -79,6 +86,20 @@ namespace SkiServiceAPI
                 ValidateIssuer = false,
                 ValidateAudience = false
             };
+        }
+
+        public static async Task SeedDatabase(IServiceProvider serviceProvider)
+        {
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var scopedContext = scope.ServiceProvider.GetRequiredService<IMongoDBContext>();
+                var scopedUserService = scope.ServiceProvider.GetRequiredService<IUserService>();
+
+                if (!await scopedContext.Users.Any())
+                {
+                    await scopedUserService.CreateSeed("admin", "admin", RoleNames.SuperAdmin);
+                }
+            }
         }
     }
 }

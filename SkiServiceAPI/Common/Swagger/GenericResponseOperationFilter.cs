@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
-using SkiServiceModels.DTOs.Responses;
+using SkiServiceAPI.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace SkiServiceAPI.Common.Swagger
@@ -23,9 +23,9 @@ namespace SkiServiceAPI.Common.Swagger
                 {
                     var genericArguments = baseType.GetGenericArguments();
                     // Assuming at least two generic type arguments
-                    if (genericArguments.Length == 5)
+                    if (genericArguments.Length == 4)
                     {
-                        Type dto = genericArguments[2]; // admin dto
+                        Type dto = genericArguments[1]; // dto
 
                         // Check if the action name is "GetAll", adjust the type to be a list of DTOs
                         if (controllerActionDescriptor.ActionName == "GetAll")
