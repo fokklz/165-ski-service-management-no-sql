@@ -187,26 +187,5 @@ namespace SkiServiceAPI.Services
             return Resolve(user);
         }
 
-        /// <summary>
-        /// Helper Method to create Seed Data
-        /// </summary>
-        /// <param name="username">The username</param>
-        /// <param name="password">The Password</param>
-        /// <param name="role">The Role</param>
-        /// <returns></returns>
-        public async Task CreateSeed(string username, string password, RoleNames role = RoleNames.User)
-        {
-            _authService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
-
-            var user = new User
-            {
-                Username = username,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
-                Role = role
-            };
-
-            await _context.Users.Collection.InsertOneAsync(user);
-        }
     }
 }

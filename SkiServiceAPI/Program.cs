@@ -63,8 +63,6 @@ namespace SkiServiceAPI
 
             app.MapControllers();
 
-            SeedDatabase(app.Services).Wait();
-
             app.Run();
         }
 
@@ -90,30 +88,6 @@ namespace SkiServiceAPI
                 ValidateIssuer = false,
                 ValidateAudience = false
             };
-        }
-
-        public static async Task SeedDatabase(IServiceProvider serviceProvider)
-        {
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var scopedContext = scope.ServiceProvider.GetRequiredService<IMongoDBContext>();
-                var scopedUserService = scope.ServiceProvider.GetRequiredService<IUserService>();
-
-                if (!await scopedContext.Users.Any())
-                {
-                    await scopedUserService.CreateSeed("Superadmin", "super", RoleNames.SuperAdmin);
-                    await scopedUserService.CreateSeed("Mitarbeiter 1", "m1", RoleNames.User);
-                    await scopedUserService.CreateSeed("Mitarbeiter 2", "m2", RoleNames.User);
-                    await scopedUserService.CreateSeed("Mitarbeiter 3", "m3", RoleNames.User);
-                    await scopedUserService.CreateSeed("Mitarbeiter 4", "m4", RoleNames.User);
-                    await scopedUserService.CreateSeed("Mitarbeiter 5", "m5", RoleNames.User);
-                    await scopedUserService.CreateSeed("Mitarbeiter 6", "m6", RoleNames.User);
-                    await scopedUserService.CreateSeed("Mitarbeiter 7", "m7", RoleNames.User);
-                    await scopedUserService.CreateSeed("Mitarbeiter 8", "m8", RoleNames.User);
-                    await scopedUserService.CreateSeed("Mitarbeiter 9", "m9", RoleNames.User);
-                    await scopedUserService.CreateSeed("Mitarbeiter 10", "m10", RoleNames.User);
-                }
-            }
         }
     }
 }

@@ -10,7 +10,6 @@ namespace SkiServiceAPI.Interfaces
 {
     public interface IUserService : IBaseService<User, UserResponse, UpdateUserRequest, CreateUserRequest>
     {
-        Task CreateSeed(string username, string password, RoleNames role = RoleNames.User);
         Task<TaskResult<object>> GetMe();
         Task<TaskResult<LoginResponse>> LoginAsync(LoginRequest model);
         Task<TaskResult<LoginResponse>> Refresh(RefreshRequest model);
