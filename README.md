@@ -36,6 +36,8 @@ security:
   authorization: enabled
 ```
 
+Tbe database will have to be restarted for the changes to take effect.
+
 ## Backup & Restore
 
 to simplify the creation of a Backup or Restore there are scripts in place which can be used to create a backup of the database.
@@ -76,6 +78,5 @@ To include any Tool in your `PATH` environment variable on Windows, follow these
 2. Select `Edit the system environment variables`.
 3. Choose `Environment Variables...`.
 4. In the `System variables` section, locate and select the `Path` variable, then click `Edit...`.
-5. Press `New` and enter the path to your MongoDB Tools installation directory.
+5. Press `New` and enter the path to your Tool installation directory.
 6. Confirm your changes by clicking `OK` on all open windows.
-7. To verify the installation, open a new command prompt and enter `mongodump --version`.
