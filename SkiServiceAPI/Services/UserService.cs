@@ -60,6 +60,8 @@ namespace SkiServiceAPI.Services
             if (!result.IsSuccess) return CreateTaskResult.Error<LoginResponse>(result);
 
             var user = result.Result;
+            if (!IsAdmin() && user.IsDeleted) return CreateTaskResult.Error<LoginResponse>(ErrorKey.ENTRY_NOT_FOUND);
+
             var token = await _tokenService.CreateToken(user, model.RememberMe);
 
             return CreateTaskResult.Success(new LoginResponse()
@@ -68,7 +70,8 @@ namespace SkiServiceAPI.Services
                 Username = user.Username,
                 Locked = user.Locked,
                 Role = user.Role.ToString(),
-                Auth = token
+                Auth = token,
+                IsDeleted = user.IsDeleted
             });
         }
 
@@ -149,16 +152,13 @@ namespace SkiServiceAPI.Services
             var current = await _context.Users.FindByIdAsync(id);
             if (current == null) return CreateTaskResult.Error<object>(ErrorKey.ENTRY_NOT_FOUND);
 
-            await _context.Users.Collection.UpdateOneAsync(GetFilter(id), entity.Parse<UpdateUserRequest, User>(new DTOParseOptions
-            {
-                IsAdmin = IsAdmin(),
-                IsOwner = IsOwnerOrAdmin(current)
-            }));
             _mapper.Map(entity, current, opts =>
             {
                 opts.Items["IsAdmin"] = IsAdmin();
-                opts.Items["IsOwner"] = true;
+                opts.Items["IsOwner"] = IsOwnerOrAdmin(current);
             });
+
+            await _context.Users.Collection.ReplaceOneAsync(GetFilter(id), current);
 
             return Resolve(current);
         }

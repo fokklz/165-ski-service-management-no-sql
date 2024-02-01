@@ -16,15 +16,26 @@ if (!$?) {
 Write-Host "Initializing... this may take a while."
 
 Get-ChildItem -Path "./mongosh/collections" -Filter "*.js" | ForEach-Object {
-    Write-Host "creating collection $($_.Name) with schema"
+    $nameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
+    Write-Host "creating collection $nameWithoutExtension with schema"
     & mongosh --file "./mongosh/collections/$($_.Name)" | Out-Null
     
     if (!$?) {
-        script::$hasError = $True;
+        $script:hasError = $True;
     }
 }
 
-& mongosh --file ./mongosh/indexes.js | Out-Null
+mongosh --file ./mongosh/indexes.js | Out-Null
+
+Get-ChildItem -Path "./mongosh/migration" -Filter "*.js" | ForEach-Object {
+    $nameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
+    Write-Host "processing migration $nameWithoutExtension"
+    & mongosh --file "./mongosh/migration/$($_.Name)" | Out-Null
+
+    if (!$?) {
+        $script:hasError = $True;
+    }
+}
 
 if (!$?) {
     $hasError = $True;

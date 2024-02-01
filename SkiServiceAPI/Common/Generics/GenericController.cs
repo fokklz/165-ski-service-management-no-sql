@@ -19,9 +19,9 @@ namespace SkiServiceAPI.Common
     [Route("api/[controller]")]
     public class GenericController<T, TResponse, TUpdate, TCreate> : ControllerBase
         where T : class, IModel
-        where TResponse : class
-        where TUpdate : class
-        where TCreate : class
+        where TResponse : class, IResponseDTO
+        where TUpdate : class, IUpdateDTO
+        where TCreate : class, ICreateDTO
     {
 
         private readonly IBaseService<T, TResponse, TUpdate, TCreate> _service;

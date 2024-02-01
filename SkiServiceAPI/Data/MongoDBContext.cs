@@ -18,10 +18,10 @@ namespace SkiServiceAPI.Data
 
         public MongoDBContext(IConfiguration configuration, IMapper mapper)
         {
-            var mongoConfig = configuration.GetSection("Database").GetSection("MongoDB");
+            var mongoConfig = configuration.GetSection("Databases").GetSection("MongoDB");
 
             _client = new MongoClient(mongoConfig.GetValue("URL", "mongodb://localhost:27017")!);
-            _database = _client.GetDatabase(mongoConfig.GetValue("Name", "skiservice-api"));
+            _database = _client.GetDatabase(mongoConfig.GetValue("Name", "SkiService"));
 
             _mapper = mapper;
         }

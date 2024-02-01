@@ -125,7 +125,6 @@ namespace SkiServiceAPI.Common
         public virtual async Task<TaskResult<IEnumerable<object>>> GetAllAsync()
         {
             var query = await _context.Set<T>().FindAsync(FilterDefinition<T>.Empty);
-            Debug.WriteLine($"----------------------------------------- {query.Count}");
             query = ApplyFilter(query.AsQueryable()).ToList();
 
             return ResolveList(query);
@@ -187,7 +186,7 @@ namespace SkiServiceAPI.Common
             if (resolvedEntity == null || (resolvedEntity.IsDeleted && !IsAdmin())) return CreateTaskResult.Error<DeleteResponse>(ErrorKey.ENTRY_NOT_FOUND);
 
             resolvedEntity.IsDeleted = true;
-            await _context.Set<T>().Collection.FindOneAndUpdateAsync(GetFilter(id), Builders<T>.Update.Set(x => x.IsDeleted, true));
+            await _context.Set<T>().Collection.ReplaceOneAsync(GetFilter(id), resolvedEntity);
 
             return CreateTaskResult.Success(new DeleteResponse
             {

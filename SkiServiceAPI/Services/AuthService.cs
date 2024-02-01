@@ -23,7 +23,7 @@ namespace SkiServiceAPI.Services
             if (!user.Locked && VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 user.LoginAttempts = 0;
-                await _context.Users.UpdateOneAsync(user);
+                await _context.Users.Collection.ReplaceOneAsync(Builders<User>.Filter.Eq(x => x.Id, user.Id), user);
                 return CreateTaskResult.Success(user);
             }
             else if (user.Locked)
@@ -36,7 +36,7 @@ namespace SkiServiceAPI.Services
             {
                 user.Locked = true;
             }
-            await _context.Users.UpdateOneAsync(user);
+            await _context.Users.Collection.ReplaceOneAsync(Builders<User>.Filter.Eq(x => x.Id, user.Id), user);
             return CreateTaskResult.Error<User>(ErrorKey.INVALID_CREDENTIALS);
         }
 
