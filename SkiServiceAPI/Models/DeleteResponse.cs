@@ -1,9 +1,11 @@
 ﻿using MongoDB.Bson;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SkiServiceAPI.Models
 {
     public class DeleteResponse
     {
-        public ObjectId Id { get; set; }
+        [AllowNull, NotNull]
+        public string Id { get; set; }
     }
 }

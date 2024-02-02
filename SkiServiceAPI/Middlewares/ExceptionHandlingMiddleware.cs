@@ -55,6 +55,9 @@ namespace SkiServiceAPI.Middlewares
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 500; // Internal Server Error
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                return context.Response.WriteAsJsonAsync(new { error = ex.Message, stackTrace = ex.StackTrace });
+
             return context.Response.WriteAsJsonAsync(new { error = "An error occurred processing your request." });
         }
     }

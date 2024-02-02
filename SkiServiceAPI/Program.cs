@@ -62,7 +62,7 @@ namespace SkiServiceAPI
             app.UseAuthorization();
 
             app.MapControllers();
-
+                
             app.Run();
         }
 

@@ -52,7 +52,12 @@ namespace SkiServiceAPI.Common.Extensions
             var version = swaggerConfig.GetValue("Version", "v1");
             var title = swaggerConfig.GetValue("Title", "SkiService Management API");
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
             builder.Services.AddEndpointsApiExplorer();
 
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MongoDB.Driver;
 using SkiServiceAPI.Interfaces;
+using SkiServiceModels.BSON.Extensions;
 using SkiServiceModels.BSON.Interfaces.Base;
 using SkiServiceModels.BSON.Models;
 
@@ -18,6 +19,7 @@ namespace SkiServiceAPI.Data
 
         public MongoDBContext(IConfiguration configuration, IMapper mapper)
         {
+            MongoDBInitialization.RegisterMappings();
             var mongoConfig = configuration.GetSection("Databases").GetSection("MongoDB");
 
             _client = new MongoClient(mongoConfig.GetValue("URL", "mongodb://localhost:27017")!);

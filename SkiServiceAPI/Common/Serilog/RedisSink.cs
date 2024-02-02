@@ -18,9 +18,15 @@ namespace SkiServiceAPI.Common.Serilog
 
         public void Emit(LogEvent logEvent)
         {
-            var message = JsonConvert.SerializeObject(logEvent);
-            var db = _redis.GetDatabase();
-            db.ListRightPush(_listName, message);
+            try
+            {
+                var message = JsonConvert.SerializeObject(logEvent);
+                var db = _redis.GetDatabase();
+                db.ListRightPush(_listName, message);
+            } catch
+            {
+                // ignored
+            }
         }
     }
 }

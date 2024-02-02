@@ -105,6 +105,7 @@ namespace SkiServiceAPI.Common
             var isAdmin = IsAdmin();
             var userId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var owenerId = (item?.GetType().GetProperty("UserId")?.GetValue(item, null) ?? item?.Id)?.ToString();
+
             if ((isAdmin && allowAdmin) || (!string.IsNullOrEmpty(owenerId) && userId == owenerId))
             {
                 return true;
@@ -155,7 +156,8 @@ namespace SkiServiceAPI.Common
 
             await _context.Set<T>().Collection.InsertOneAsync(resolvedEntity);
 
-            return Resolve(resolvedEntity);
+            var item = (await _context.Set<T>().FindAsync(GetFilter(resolvedEntity.Id))).FirstOrDefault();
+            return Resolve(item!);
         }
 
         /// <summary>
@@ -172,7 +174,8 @@ namespace SkiServiceAPI.Common
             _mapper.Map(entity, resolvedEntity);
             await _context.Set<T>().Collection.ReplaceOneAsync(GetFilter(id), resolvedEntity);
 
-            return Resolve(resolvedEntity);
+            var item = (await _context.Set<T>().FindAsync(GetFilter(resolvedEntity.Id))).FirstOrDefault();
+            return Resolve(item!);
         }
 
         /// <summary>
@@ -182,7 +185,7 @@ namespace SkiServiceAPI.Common
         /// <returns>DeleteResponse as TaskResult</returns>
         public virtual async Task<TaskResult<DeleteResponse>> DeleteAsync(ObjectId id)
         {
-            var resolvedEntity = (await _context.Set<T>().FindAsync(Builders<T>.Filter.Eq("_id", GetFilter(id)))).FirstOrDefault();
+            var resolvedEntity = (await _context.Set<T>().FindAsync(GetFilter(id))).FirstOrDefault();
             if (resolvedEntity == null || (resolvedEntity.IsDeleted && !IsAdmin())) return CreateTaskResult.Error<DeleteResponse>(ErrorKey.ENTRY_NOT_FOUND);
 
             resolvedEntity.IsDeleted = true;
@@ -190,7 +193,7 @@ namespace SkiServiceAPI.Common
 
             return CreateTaskResult.Success(new DeleteResponse
             {
-                Id = id
+                Id = id.ToString(),
             });
         }
     }

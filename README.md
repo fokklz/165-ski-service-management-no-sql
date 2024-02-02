@@ -5,6 +5,7 @@
 - [Installation](#installation)
   - [Dockerized](#dockerized)
   - [Non-Dockerized](#non-dockerized)
+- [Postman Tests](#postman-tests)
 - [Backup \& Restore](#backup--restore)
   - [Backup](#backup)
   - [Restore](#restore)
@@ -26,7 +27,6 @@ This will build the project and start the container in the background. The appli
 The database will be initialized when the container starts a flag determins if the initialization should happen. To reset the database delete the `initialized` file in the `.docker/flags` directory of the project.
 
 ### Non-Dockerized
-
 
 To run the project mongodb the Database will need some initial setup.
 Open a Powershell terminal in the `scripts` directory of the project and run the following command:
@@ -54,11 +54,19 @@ security:
 
 The database will have to be restarted for the changes to take effect.
 
+## Postman Tests
+
+To run the Postman tests, open the Postman application and import the `SkiService-Management.postman_collection.json` file located in the `files` directory of the project. The collection contains a set of tests that can be run to verify the functionality of the API.
+
+The collection is configured to automatically run the tests in the correct order it will use docker by default (ensure its running). You can change this behavior inside the collection variables.
+
+Right click on the collection and select `Run Collection` to start the tests. Ensure to set a minimum of 200ms delay between requests to avoid collisons.
+
 ## Backup & Restore
 
 to simplify the creation of a Backup or Restore there are scripts in place which can be used to create a backup of the database.
 
-To run any of these scripts ensure that you have the mongodb tools installed ([Tutorial](https://www.mongodb.com/docs/database-tools/installation/installation-windows/)) and that the folder is added to your `PATH` variable. If you are using docker you can skip this step.
+To run any of these scripts ensure that you have the mongodb tools installed ([Tutorial](https://www.mongodb.com/docs/database-tools/installation/installation-windows/)) and that the folder is added to your `PATH` variable.
 
 ### Backup
 
@@ -102,3 +110,4 @@ To include any Tool in your `PATH` environment variable on Windows, follow these
 4. In the `System variables` section, locate and select the `Path` variable, then click `Edit...`.
 5. Press `New` and enter the path to your Tool installation directory.
 6. Confirm your changes by clicking `OK` on all open windows.
+

@@ -15,6 +15,7 @@
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.1" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.3.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.3.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
@@ -23,9 +24,9 @@
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="SkiServiceModels.BSON" Version="2.3.6" />
-    <PackageReference Include="SkiServiceModels.BSON.AutoMapper" Version="2.3.6" />
-    <PackageReference Include="SkiServiceModels.BSON.Extensions" Version="2.3.6" />
+    <PackageReference Include="SkiServiceModels.BSON" Version="2.3.10" />
+    <PackageReference Include="SkiServiceModels.BSON.AutoMapper" Version="2.3.10" />
+    <PackageReference Include="SkiServiceModels.BSON.Extensions" Version="2.3.10" />
     <PackageReference Include="StackExchange.Redis" Version="2.7.17" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>

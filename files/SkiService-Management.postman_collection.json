@@ -1,0 +1,1920 @@
+{
+	"info": {
+		"_postman_id": "8c7d34cf-b4e3-4211-b8d6-08ee54ec882c",
+		"name": "SkiService-Management",
+		"description": "Set 100ms delay while testing to reduce procedural errors",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18842395",
+		"_collection_link": "https://fokklzdev.postman.co/workspace/Team-Workspace~3d3c32c6-ccc2-48b4-8159-821e82a228a5/collection/18842395-8c7d34cf-b4e3-4211-b8d6-08ee54ec882c?action=share&source=collection_link&creator=18842395"
+	},
+	"item": [
+		{
+			"name": "Logins",
+			"item": [
+				{
+					"name": "Mitarbeiter 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Token is a non-empty string\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.auth.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"'Mitarbeiter 1' in username\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.username).to.be.a('string').and.to.equal('Mitarbeiter 1')\r",
+									"});\r",
+									"\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set('token', jsonData.auth.token)\r",
+									"pm.collectionVariables.set('refreshToken', jsonData.auth.refreshToken)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Mitarbeiter 1\",\r\n    \"password\": \"m1\",\r\n    \"rememberMe\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/users/login",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 404, since its only a dummy route to remove the token\", function () {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set('token', null);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Superadmin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Token is a non-empty string\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.auth.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"'Superadmin' in username\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.username).to.be.a('string').and.to.equal('Superadmin')\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set('token', jsonData.auth.token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Superadmin\",\r\n    \"password\": \"super\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/users/login",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Prepare",
+			"item": [
+				{
+					"name": "Store Priority Ids",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Store all ids in a global variable for later use\r",
+									"var responseBody = pm.response.json();\r",
+									"\r",
+									"var allIds = [];\r",
+									"responseBody.forEach(function(item) {\r",
+									"    allIds.push(item.id);\r",
+									"});\r",
+									"\r",
+									"pm.globals.set(\"priority_ids\", allIds);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/priorities",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"priorities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store State Ids",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Store all ids in a global variable for later use\r",
+									"var responseBody = pm.response.json();\r",
+									"\r",
+									"var allIds = [];\r",
+									"responseBody.forEach(function(item) {\r",
+									"    allIds.push(item.id);\r",
+									"});\r",
+									"\r",
+									"pm.globals.set(\"state_ids\", allIds);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/states",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"states"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store Service Ids",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Store all ids in a global variable for later use\r",
+									"var responseBody = pm.response.json();\r",
+									"\r",
+									"var allIds = [];\r",
+									"responseBody.forEach(function(item) {\r",
+									"    allIds.push(item.id);\r",
+									"});\r",
+									"\r",
+									"pm.globals.set(\"service_ids\", allIds);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/services",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store User Ids",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Store all ids in a global variable for later use\r",
+									"var responseBody = pm.response.json();\r",
+									"\r",
+									"var allIds = [];\r",
+									"responseBody.forEach(function(item) {\r",
+									"    allIds.push(item.id);\r",
+									"});\r",
+									"\r",
+									"pm.globals.set(\"user_ids\", allIds);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/users",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GetAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Verify that the response is an array\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/users",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The username field is the just sent value\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.username).to.be.a('string').and.to.equal(pm.variables.get('uuid'))\r",
+									"});\r",
+									"\r",
+									"var data = pm.response.json();\r",
+									"pm.variables.set('created_user', data.id);\r",
+									"pm.variables.set('created_user_name', data.username);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"uuid\", require('uuid').v4());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{uuid}}\", // to avoid unique contraint violation\r\n  \"password\": \"einnutzer\"\r\n  //\"locked\": true,\r\n  //\"role\": 0\r\n    // 0 - Mitarbeiter\r\n    // 1 - Superadmin\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/users",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Should have username 'Superadmin'\", function () {\r",
+									"     pm.expect(pm.response.json().username).to.equal('Superadmin');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/users/me",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"responseData.locked should be boolean and true\", function(){\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.locked).to.be.a('boolean').and.to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"locked\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/users/{{created_user}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{created_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The username field is the before created\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.username).to.be.a('string').and.to.equal(pm.variables.get('created_user_name'))\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/users/{{created_user}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{created_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlock",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/users/{{created_user}}/unlock",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{created_user}}",
+								"unlock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned id matches the created user\", function(){\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData.id).to.equal(pm.variables.get('created_user'));\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/users/{{created_user}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{created_user}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Name should be a string in the response\", function () {\r",
+									"    pm.expect(pm.response.json().name).to.be.a('string').and.equal('string')\r",
+									"});\r",
+									"\r",
+									"var data = pm.response.json();\r",
+									"\r",
+									"pm.variables.set('created_order', data.id);\r",
+									"pm.variables.set('created_order_name', data.name);\r",
+									"pm.variables.set('created_order_service', data.service.id);\r",
+									"pm.variables.set('created_order_priority', data.priority.id);\r",
+									"pm.variables.set('created_order_state', data.state.id);\r",
+									"pm.variables.set('created_order_user', data.user?.id ?? null)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Pick a random user id from the stored values\r",
+									"var user_ids = pm.globals.get('user_ids');\r",
+									"var random_user_id = user_ids[Math.floor(Math.random() * user_ids.length)];\r",
+									"\r",
+									"// Pick a random priority id from the stored values\r",
+									"var priority_ids = pm.globals.get('priority_ids');\r",
+									"var random_priority_id = priority_ids[Math.floor(Math.random() * priority_ids.length)];\r",
+									"\r",
+									"// Pick a random state id from the stored values\r",
+									"var state_ids = pm.globals.get('state_ids');\r",
+									"var random_state_id = state_ids[Math.floor(Math.random() * state_ids.length)];\r",
+									"\r",
+									"// Pick a random service id from the stored values\r",
+									"var service_ids = pm.globals.get('service_ids');\r",
+									"var random_service_id = service_ids[Math.floor(Math.random() * service_ids.length)];\r",
+									"\r",
+									"pm.variables.set('create_order_user', random_user_id);\r",
+									"pm.variables.set('create_order_priority', random_priority_id);\r",
+									"pm.variables.set('create_order_state', random_state_id);\r",
+									"pm.variables.set('create_order_service', random_service_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"service_id\": \"{{create_order_service}}\",\r\n  \"priority_id\": \"{{create_order_priority}}\",\r\n  \"state_id\": \"{{create_order_state}}\",\r\n  //\"user_id\": \"{{create_order_user}}\",\r\n  //\"note\": \"string\",\r\n  \"name\": \"string\",\r\n  \"email\": \"user@example.com\",\r\n  \"phone\": \"+15703464918\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/orders",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify that the response is an array\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/orders",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The name field is the before created\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.name).to.be.a('string').and.to.equal(pm.variables.get('created_order_name'))\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/orders/{{created_order}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has user property\", function () {\r",
+									"    pm.expect(pm.response.json()).to.have.property('user');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"user.id is equal to the variable update_order_user\", function () {\r",
+									"    pm.expect(pm.response.json().user.id).to.equal(pm.variables.get('update_order_user'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Pick a random user id from the stored values\r",
+									"var user_ids = pm.globals.get('user_ids');\r",
+									"var random_user_id = user_ids[Math.floor(Math.random() * user_ids.length)];\r",
+									"\r",
+									"// Pick a random priority id from the stored values\r",
+									"var priority_ids = pm.globals.get('priority_ids');\r",
+									"var random_priority_id = priority_ids[Math.floor(Math.random() * priority_ids.length)];\r",
+									"\r",
+									"// Pick a random state id from the stored values\r",
+									"var state_ids = pm.globals.get('state_ids');\r",
+									"var random_state_id = state_ids[Math.floor(Math.random() * state_ids.length)];\r",
+									"\r",
+									"// Pick a random service id from the stored values\r",
+									"var service_ids = pm.globals.get('service_ids');\r",
+									"var random_service_id = service_ids[Math.floor(Math.random() * service_ids.length)];\r",
+									"\r",
+									"pm.variables.set('update_order_user', random_user_id);\r",
+									"pm.variables.set('update_order_priority', random_priority_id);\r",
+									"pm.variables.set('update_order_state', random_state_id);\r",
+									"pm.variables.set('update_order_service', random_service_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"service_id\": \"{{update_order_service}}\",\r\n  \"priority_id\": \"{{update_order_priority}}\",\r\n  \"state_id\": \"{{update_order_state}}\",\r\n  \"user_id\": \"{{update_order_user}}\",\r\n  \"name\": \"string\",\r\n  \"email\": \"user@example.com\",\r\n  \"phone\": \"4689371281\",\r\n  \"note\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/orders/{{created_order}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned id should be the one created before\", function () {\r",
+									"    pm.expect(pm.response.json().id).to.equal(pm.variables.get(\"created_order\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/orders/{{created_order}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"{{created_order}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify that the response is an array\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Pick a random user id from the stored values\r",
+									"var user_ids = pm.globals.get('user_ids');\r",
+									"var random_user_id = user_ids[Math.floor(Math.random() * user_ids.length)];\r",
+									"\r",
+									"pm.variables.set('random_user', random_user_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/orders/user/{{random_user}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"user",
+								"{{random_user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByState",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify that the response is an array\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Pick a random state id from the stored values\r",
+									"var state_ids = pm.globals.get('state_ids');\r",
+									"var random_state_id = state_ids[Math.floor(Math.random() * state_ids.length)];\r",
+									"\r",
+									"pm.variables.set('random_state', random_state_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/orders/state/{{random_state}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"state",
+								"{{random_state}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByService",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify that the response is an array\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Pick a random service id from the stored values\r",
+									"var service_ids = pm.globals.get('service_ids');\r",
+									"var random_service_id = service_ids[Math.floor(Math.random() * service_ids.length)];\r",
+									"\r",
+									"pm.variables.set('random_service', random_service_id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/orders/service/{{random_service}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"service",
+								"{{random_service}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByPriority",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify that the response is an array\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Pick a random priority id from the stored values\r",
+									"var priority_ids = pm.globals.get('priority_ids');\r",
+									"var random_priority_id = priority_ids[Math.floor(Math.random() * priority_ids.length)];\r",
+									"\r",
+									"pm.variables.set('random_priority', random_priority_id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/orders/priority/{{random_priority}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"priority",
+								"{{random_priority}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "States",
+			"item": [
+				{
+					"name": "GetAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify that the response is an array\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/states",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"states"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response name equals the variable random_name\", function () {\r",
+									"    var random_name = pm.variables.get('random_name');\r",
+									"    pm.expect(pm.response.json().name).to.equal(random_name);\r",
+									"});\r",
+									"\r",
+									"var data = pm.response.json();\r",
+									"\r",
+									"pm.variables.set('created_state', data.id);\r",
+									"pm.variables.set('created_state_name', data.name);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateUUID() {\r",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\r",
+									"        var r = Math.random() * 16 | 0,\r",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);\r",
+									"        return v.toString(16);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"var random_name = generateUUID();\r",
+									"pm.variables.set('random_name', random_name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{random_name}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/states",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"states"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The name field is the before created\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.name).to.be.a('string').and.to.equal(pm.variables.get('created_state_name'))\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/states/{{created_state}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"states",
+								"{{created_state}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The name field is the newly updated\", function () {\r",
+									"    var random_name = pm.variables.get('random_name');\r",
+									"    pm.expect(pm.response.json().name).to.equal(random_name);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateUUID() {\r",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\r",
+									"        var r = Math.random() * 16 | 0,\r",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);\r",
+									"        return v.toString(16);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"var random_name = generateUUID();\r",
+									"pm.variables.set('random_name', random_name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{random_name}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/states/{{created_state}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"states",
+								"{{created_state}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned id should be the one created before\", function () {\r",
+									"    pm.expect(pm.response.json().id).to.equal(pm.variables.get(\"created_state\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/states/{{created_state}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"states",
+								"{{created_state}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Services",
+			"item": [
+				{
+					"name": "GetAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify that the response is an array\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/services",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response name equals the variable random_name\", function () {\r",
+									"    var random_name = pm.variables.get('random_name');\r",
+									"    pm.expect(pm.response.json().name).to.equal(random_name);\r",
+									"});\r",
+									"\r",
+									"var data = pm.response.json();\r",
+									"\r",
+									"pm.variables.set('created_service', data.id);\r",
+									"pm.variables.set('created_service_name', data.name);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateUUID() {\r",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\r",
+									"        var r = Math.random() * 16 | 0,\r",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);\r",
+									"        return v.toString(16);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"var random_name = generateUUID();\r",
+									"pm.variables.set('random_name', random_name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{random_name}}\",\r\n  \"description\": \"string\",\r\n  \"price\": 1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/services",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The name field is the before created\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.name).to.be.a('string').and.to.equal(pm.variables.get('created_service_name'))\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/services/{{created_service}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"services",
+								"{{created_service}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The name field is the newly updated\", function () {\r",
+									"    var random_name = pm.variables.get('random_name');\r",
+									"    pm.expect(pm.response.json().name).to.equal(random_name);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateUUID() {\r",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\r",
+									"        var r = Math.random() * 16 | 0,\r",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);\r",
+									"        return v.toString(16);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"var random_name = generateUUID();\r",
+									"pm.variables.set('random_name', random_name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{random_name}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/services/{{created_service}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"services",
+								"{{created_service}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned id should be the one created before\", function () {\r",
+									"    pm.expect(pm.response.json().id).to.equal(pm.variables.get(\"created_service\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/services/{{created_service}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"services",
+								"{{created_service}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Priority",
+			"item": [
+				{
+					"name": "GetAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify that the response is an array\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('array');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/priorities",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"priorities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response name equals the variable random_name\", function () {\r",
+									"    var random_name = pm.variables.get('random_name');\r",
+									"    pm.expect(pm.response.json().name).to.equal(random_name);\r",
+									"});\r",
+									"\r",
+									"var data = pm.response.json();\r",
+									"\r",
+									"pm.variables.set('created_priority', data.id);\r",
+									"pm.variables.set('created_priority_name', data.name);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateUUID() {\r",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\r",
+									"        var r = Math.random() * 16 | 0,\r",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);\r",
+									"        return v.toString(16);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"var random_name = generateUUID();\r",
+									"pm.variables.set('random_name', random_name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{random_name}}\",\r\n  \"days\": 365\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/priorities",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"priorities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The name field is the before created\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.name).to.be.a('string').and.to.equal(pm.variables.get('created_priority_name'))\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/priorities/{{created_priority}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"priorities",
+								"{{created_priority}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The name field is the newly updated\", function () {\r",
+									"    var random_name = pm.variables.get('random_name');\r",
+									"    pm.expect(pm.response.json().name).to.equal(random_name);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function generateUUID() {\r",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {\r",
+									"        var r = Math.random() * 16 | 0,\r",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);\r",
+									"        return v.toString(16);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"var random_name = generateUUID();\r",
+									"pm.variables.set('random_name', random_name);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{random_name}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/api/priorities/{{created_priority}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"priorities",
+								"{{created_priority}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned id should be the one created before\", function () {\r",
+									"    pm.expect(pm.response.json().id).to.equal(pm.variables.get(\"created_priority\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{HOST}}/api/priorities/{{created_priority}}",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"api",
+								"priorities",
+								"{{created_priority}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "https://localhost:7137",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		}
+	]
+}
