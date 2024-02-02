@@ -22,7 +22,7 @@ namespace SkiServiceAPI.Data
             MongoDBInitialization.RegisterMappings();
             var mongoConfig = configuration.GetSection("Databases").GetSection("MongoDB");
 
-            _client = new MongoClient(mongoConfig.GetValue("URL", "mongodb://localhost:27017")!);
+            _client = new MongoClient(mongoConfig.GetValue("URL", "mongodb://DMLUser:verySecurePassword@localhost:27017/?authSource=SkiService")!);
             _database = _client.GetDatabase(mongoConfig.GetValue("Name", "SkiService"));
 
             _mapper = mapper;
