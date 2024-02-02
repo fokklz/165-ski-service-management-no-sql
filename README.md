@@ -1,10 +1,16 @@
 # SkiService Backend - NoSQL <!-- omit in toc -->
 
+The SkiService Backend project leverages a robust NoSQL database architecture to streamline ski service management. It delivers a scalable and efficient backend system designed to handle various operational needs, including order management, user interactions, service tracking, and overall service state monitoring.
+
 ## Contents <!-- omit in toc -->
 
+- [Installation Requirements](#installation-requirements)
+  - [Dockerized Setup](#dockerized-setup)
+  - [Non-Dockerized Setup](#non-dockerized-setup)
 - [Installation](#installation)
   - [Dockerized](#dockerized)
   - [Non-Dockerized](#non-dockerized)
+- [Technology Stack](#technology-stack)
 - [Postman Tests](#postman-tests)
 - [Backup \& Restore](#backup--restore)
   - [Backup](#backup)
@@ -12,102 +18,114 @@
 - [Extra](#extra)
   - [Adding to PATH](#adding-to-path)
 
+## Installation Requirements
+
+### Dockerized Setup
+
+- **Docker**
+- **Docker Compose**
+
+### Non-Dockerized Setup
+
+- **MongoDB**
+- **.NET 8**
+- **Powershell**
+- **Visual Studio 2022**
+
 ## Installation
 
 ### Dockerized
 
-To run the project in a docker container, open a Powershell terminal in the root directory of the project and run the following command:
+For dockerized project deployment, open a Powershell terminal at the project's root directory and execute:
 
 ```bash
 docker-compose up -d --build
 ```
 
-This will build the project and start the container in the background. The application will be available at `http://localhost:8000` and the database at `mongodb://localhost:17017`. For simplicity the environment is set to development which will allow you to access Swagger UI at `http://localhost:8000/swagger`.
+This command builds the project and starts the container in the background. Access the application at `http://localhost:8000` and the database at `mongodb://localhost:17017`. The development environment enables Swagger UI access at `http://localhost:8000/swagger`. In this mode, the application reveals raw exception data instead of user-friendly error messages.
 
-The database will be initialized when the container starts a flag determins if the initialization should happen. To reset the database delete the `initialized` file in the `.docker/flags` directory of the project.
+Database initialization occurs at container start-up, controlled by a specific flag. To reset the database, delete the `initialized` flag file in the `.docker/flags` directory.
 
 ### Non-Dockerized
 
-To run the project mongodb the Database will need some initial setup.
-Open a Powershell terminal in the `scripts` directory of the project and run the following command:
+For non-dockerized setup, initial database configuration is required. In the `scripts` directory, execute:
 
-**CAUTION:** This will delete all existing data in the database! Tied to the `SkiService` database and the `DMLUser` user. If you have data you want to keep, make sure to back it up before running this script.
+**CAUTION:** This will erase all existing data linked to the `SkiService` database and `DMLUser`. Ensure you backup any important data before proceeding.
 
-If Authentication is enabled in the `mongod.cfg` file, the database will have to contain a user called superadmin with the password `superadmin`
+If your `mongod.cfg` includes authentication, ensure a `superadmin` user exists with the password `superadmin`.
 
 ```bash
 .\initialize.ps1
 ```
 
-or right click on the file and select `Run with Powershell` if you are on a newer Windows version.
+Alternatively, right-click the file and choose `Run with Powershell` on newer Windows versions.
 
-This script will create a database called `SkiService` and a user called `DMLUser` with the password `verySecurePassword` which will be used by the application to access the database. `admin` will be used as authentication database. Also a `superadmin` will be created with the password `superadmin` which can be used to administer the database.
+This script sets up the `SkiService` database and a `DMLUser` with `verySecurePassword`, using `admin` for authentication. A `superadmin` user with `superadmin` password is also created for database administration.
 
-The database will be initialized with empty collections that contain a defined schema. The schemas can be found in the `mongosh/collections` directory of the project inside the `scripts` directory.
-
-To fully secure your database ensure to enable authentication in the `mongod.cfg` file by adding the following lines:
+To secure the database, enable authentication in `mongod.cfg` by adding:
 
 ```yaml
 security:
   authorization: enabled
 ```
 
-The database will have to be restarted for the changes to take effect.
+Restart the database for these changes to take effect.
+
+After setup, open `165-ski-service-management-no-sql.sln` in Visual Studio 2022 and launch the project. The application will open in the default browser at the Swagger page.
+
+## Technology Stack
+
+- **Framework:** ASP.NET Core
+- **Database:** MongoDB
+- **Logging:** Serilog with Redis Sink
+- **Containerization:** Docker and Docker Compose for streamlined deployment and scaling
+- **Authentication & Authorization:** JWT for secure API access
 
 ## Postman Tests
 
-To run the Postman tests, open the Postman application and import the `SkiService-Management.postman_collection.json` file located in the `files` directory of the project. The collection contains a set of tests that can be run to verify the functionality of the API.
+Import `SkiService-Management.postman_collection.json` from the `files` directory into Postman to run API functionality tests. The collection is pre-configured for docker environments (ensure Docker is running).
 
-The collection is configured to automatically run the tests in the correct order it will use docker by default (ensure its running). You can change this behavior inside the collection variables.
-
-Right click on the collection and select `Run Collection` to start the tests. Ensure to set a minimum of 200ms delay between requests to avoid collisons.
+Right-click the collection and select `Run Collection` to begin testing, with a recommended delay of at least 200ms between requests to prevent collisions.
 
 ## Backup & Restore
 
-to simplify the creation of a Backup or Restore there are scripts in place which can be used to create a backup of the database.
-
-To run any of these scripts ensure that you have the mongodb tools installed ([Tutorial](https://www.mongodb.com/docs/database-tools/installation/installation-windows/)) and that the folder is added to your `PATH` variable.
+Scripts are available for easy database backup and restoration. Ensure MongoDB tools are installed and accessible via your `PATH`.
 
 ### Backup
 
-open a Powershell terminal in the `scripts` directory of the project and run the following command:
+In the `scripts` directory, execute:
 
 ```bash
 .\backup.ps1
 
-# if using docker run the command below instead
+# For Docker, use:
 .\backup.docker.ps1
 ```
 
-or right click on the file and select `Run with Powershell` if you are on a newer Windows version.
-
-This will create a backup archived in a zip file in the `backups` directory of the project.
+A backup archive will be created in the `backups` directory.
 
 ### Restore
 
-open a Powershell terminal in the `scripts` directory of the project and run the following command:
+To restore from a backup. In the `scripts` directory, execute:
 
 ```bash
 .\restore.ps1
 
-# if using docker run the command below instead
+# For Docker, use:
 .\restore.docker.ps1
 ```
 
-or right click on the file and select `Run with Powershell` if you are on a newer Windows version.
-
-This will open a dialog allowing you to select a backup file to restore. After selecting the file the script will restore the backup to the database, existing data will be overwritten.
+A dialog will prompt you to select a backup file for restoration, overwriting existing data.
 
 ## Extra
 
 ### Adding to PATH
 
-To include any Tool in your `PATH` environment variable on Windows, follow these instructions (ensure to link the folder containing the .exe files):
+To add a tool to the `PATH` on Windows:
 
-1. Open the Start menu and search for `environment variables`.
-2. Select `Edit the system environment variables`.
-3. Choose `Environment Variables...`.
-4. In the `System variables` section, locate and select the `Path` variable, then click `Edit...`.
-5. Press `New` and enter the path to your Tool installation directory.
-6. Confirm your changes by clicking `OK` on all open windows.
-
+1. Open Start and search for `environment variables`.
+2. Click `Edit the system environment variables`.
+3. Select `Environment Variables...`.
+4. Find `Path` under `System variables`, select it, then click `Edit...`.
+5. Click `New` and type the path to the tool's installation directory.
+6. Apply the changes by clicking `OK` on all dialogs
