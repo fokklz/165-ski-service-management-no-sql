@@ -1,12 +1,18 @@
+param (
+    [string]$Uri = "mongodb://localhost:27017"
+)
+
 $hasError = $False;
+$hasAuth = $True;
 
 Write-Host "Cleanup starting..."
 
-mongosh --file ./mongosh/cleanup.js --username superadmin --password superadmin --authenticationDatabase admin | Out-Null
+mongosh --file "${PSScriptRoot}/mongosh/cleanup.js" --username superadmin --password superadmin --authenticationDatabase admin "$Uri" | Out-Null
 
 if (!$?) {
     Write-Host "No superadmin user found. Trying to cleanup without authentication."
-    mongosh --file ./mongosh/cleanup.js | Out-Null
+    mongosh --file "${PSScriptRoot}/mongosh/cleanup.js" "$Uri" | Out-Null
+    $hasAuth = $False;
 
     if (!$?) {
         $hasError = $True;
@@ -15,22 +21,47 @@ if (!$?) {
 
 Write-Host "Initializing... this may take a while."
 
-Get-ChildItem -Path "./mongosh/collections" -Filter "*.js" | ForEach-Object {
+Get-ChildItem -Path "${PSScriptRoot}/mongosh/collections" -Filter "*.js" | ForEach-Object {
     $nameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
     Write-Host "creating collection $nameWithoutExtension with schema"
-    & mongosh --file "./mongosh/collections/$($_.Name)" | Out-Null
-    
+    if ($hasAuth) {
+        & mongosh --file "${PSScriptRoot}/mongosh/collections/$($_.Name)" --username superadmin --password "superadmin" --authenticationDatabase admin "$Uri" | Out-Null
+    }
+    else {
+        & mongosh --file "${PSScriptRoot}/mongosh/collections/$($_.Name)" "$Uri" | Out-Null
+    }
     if (!$?) {
         $script:hasError = $True;
     }
 }
 
-mongosh --file ./mongosh/indexes.js | Out-Null
+if (!$?) {
+    $hasError = $True;
+}
 
-Get-ChildItem -Path "./mongosh/migration" -Filter "*.js" | ForEach-Object {
+
+if ($hasAuth) {
+    mongosh --file "${PSScriptRoot}/mongosh/indexes.js" --username superadmin --password "superadmin" --authenticationDatabase admin "$Uri" | Out-Null
+}
+else {
+    mongosh --file "${PSScriptRoot}/mongosh/indexes.js" "$Uri" | Out-Null
+}
+
+
+if (!$?) {
+    $hasError = $True;
+}
+
+
+Get-ChildItem -Path "${PSScriptRoot}/mongosh/migration" -Filter "*.js" | ForEach-Object {
     $nameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($_.Name)
     Write-Host "processing migration $nameWithoutExtension"
-    & mongosh --file "./mongosh/migration/$($_.Name)" | Out-Null
+    if ($hasAuth) {
+        & mongosh --file "${PSScriptRoot}/mongosh/migration/$($_.Name)" --username superadmin --password "superadmin" --authenticationDatabase admin "$Uri" | Out-Null
+    }
+    else {
+        & mongosh --file "${PSScriptRoot}/mongosh/migration/$($_.Name)" "$Uri" | Out-Null
+    }
 
     if (!$?) {
         $script:hasError = $True;
@@ -41,7 +72,12 @@ if (!$?) {
     $hasError = $True;
 }
 
-mongosh --file ./mongosh/create-dml-and-superadmin.js | Out-Null
+if ($hasAuth) {
+    mongosh --file "${PSScriptRoot}/mongosh/create-dml-and-superadmin.js" --username superadmin --password "superadmin" --authenticationDatabase admin "$Uri" | Out-Null
+}
+else {
+    mongosh --file "${PSScriptRoot}/mongosh/create-dml-and-superadmin.js" "$Uri" | Out-Null
+}
 
 if (!$?) {
     $hasError = $True;

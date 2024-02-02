@@ -1,5 +1,4 @@
-try{
-db.getSiblingDB('SkiService').priorities.insertMany([
+db.getSiblingDB('SkiService').orders.insertMany([
   {
     name: 'Alex',
     email: 'alex@example.com',
@@ -9,7 +8,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f380'),
     user_id: ObjectId('65baa8ce591ce541e27903aa'),
     created: new Date('2024-01-31T00:00:00.000Z'),
-    note: null
+    note: null,
   },
   {
     name: 'Jamie',
@@ -20,7 +19,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f381'),
     user_id: ObjectId('65baa8ce591ce541e27903ab'),
     created: new Date('2024-02-01T00:00:00.000Z'),
-    note: null
+    note: null,
   },
   {
     name: 'Jordan',
@@ -31,7 +30,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f382'),
     user_id: ObjectId('65baa8ce591ce541e27903ac'),
     created: new Date('2024-01-29T00:00:00.000Z'),
-    note: null
+    note: null,
   },
   {
     name: 'Sam',
@@ -42,7 +41,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f383'),
     user_id: ObjectId('65baa8ce591ce541e27903ad'),
     created: new Date('2024-02-02T00:00:00.000Z'),
-    note: null
+    note: null,
   },
   {
     name: 'Pat',
@@ -53,7 +52,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f384'),
     user_id: ObjectId('65baa8ce591ce541e27903ae'),
     created: new Date('2024-01-30T00:00:00.000Z'),
-    note: 'Urgent follow-up required'
+    note: 'Urgent follow-up required',
   },
   {
     name: 'Taylor',
@@ -64,7 +63,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f385'),
     user_id: ObjectId('65baa8ce591ce541e27903af'),
     created: new Date('2024-02-03T00:00:00.000Z'),
-    note: null
+    note: null,
   },
   {
     name: 'Casey',
@@ -75,7 +74,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f386'),
     user_id: ObjectId('65baa8ce591ce541e27903b0'),
     created: new Date('2024-01-28T00:00:00.000Z'),
-    note: 'Check for additional requirements'
+    note: 'Check for additional requirements',
   },
   {
     name: 'Morgan',
@@ -86,7 +85,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f387'),
     user_id: ObjectId('65baa8ce591ce541e27903b1'),
     created: new Date('2024-02-04T00:00:00.000Z'),
-    note: 'Pending approval from supervisor'
+    note: 'Pending approval from supervisor',
   },
   {
     name: 'Terry',
@@ -97,7 +96,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f388'),
     user_id: ObjectId('65baa8ce591ce541e27903b2'),
     created: new Date('2024-01-27T00:00:00.000Z'),
-    note: 'Special instructions attached'
+    note: 'Special instructions attached',
   },
   {
     name: 'Cameron',
@@ -108,7 +107,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f389'),
     user_id: ObjectId('65baa8ce591ce541e27903b3'),
     created: new Date('2024-02-05T00:00:00.000Z'),
-    note: null
+    note: null,
   },
   {
     name: 'Reese',
@@ -119,7 +118,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f38a'),
     user_id: ObjectId('65baa8ce591ce541e27903b4'),
     created: new Date('2024-01-26T00:00:00.000Z'),
-    note: 'Customer requested expedited processing'
+    note: 'Customer requested expedited processing',
   },
   {
     name: 'Quinn',
@@ -130,7 +129,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f38b'),
     user_id: ObjectId('65baa8ce591ce541e27903b5'),
     created: new Date('2024-02-06T00:00:00.000Z'),
-    note: 'Requires additional documentation'
+    note: 'Requires additional documentation',
   },
   {
     name: 'Drew',
@@ -141,7 +140,7 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f38c'),
     user_id: ObjectId('65baa8ce591ce541e27903b6'),
     created: new Date('2024-01-25T00:00:00.000Z'),
-    note: 'Follow up in two weeks'
+    note: 'Follow up in two weeks',
   },
   {
     name: 'Skyler',
@@ -152,9 +151,6 @@ db.getSiblingDB('SkiService').priorities.insertMany([
     state_id: ObjectId('65bac2721f0ce5a1a2b5f38d'),
     user_id: ObjectId('65baa8ce591ce541e27903b7'),
     created: new Date('2024-02-07T00:00:00.000Z'),
-    note: 'Waiting on customer confirmation'
+    note: 'Waiting on customer confirmation',
   },
 ]);
-} catch (e) {
-  console.error(e.writeErrors); // This line prints detailed error information
-}

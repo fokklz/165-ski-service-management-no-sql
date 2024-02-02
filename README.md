@@ -3,7 +3,8 @@
 ## Contents <!-- omit in toc -->
 
 - [Installation](#installation)
-  - [Finalizing the installation](#finalizing-the-installation)
+  - [Dockerized](#dockerized)
+  - [Non-Dockerized](#non-dockerized)
 - [Backup \& Restore](#backup--restore)
   - [Backup](#backup)
   - [Restore](#restore)
@@ -12,10 +13,27 @@
 
 ## Installation
 
+### Dockerized
+
+To run the project in a docker container, open a Powershell terminal in the root directory of the project and run the following command:
+
+```bash
+docker-compose up -d --build
+```
+
+This will build the project and start the container in the background. The application will be available at `http://localhost:8000` and the database at `mongodb://localhost:17017`. For simplicity the environment is set to development which will allow you to access Swagger UI at `http://localhost:8000/swagger`.
+
+The database will be initialized when the container starts a flag determins if the initialization should happen. To reset the database delete the `initialized` file in the `.docker/flags` directory of the project.
+
+### Non-Dockerized
+
+
 To run the project mongodb the Database will need some initial setup.
 Open a Powershell terminal in the `scripts` directory of the project and run the following command:
 
-**CAUTION:** This will delete all existing data in the database! In the admin Database the users or roles named by the reserved names `DMLUser`, `superadmin` or `DMLRole` will be overwritten if changed.
+**CAUTION:** This will delete all existing data in the database! Tied to the `SkiService` database and the `DMLUser` user. If you have data you want to keep, make sure to back it up before running this script.
+
+If Authentication is enabled in the `mongod.cfg` file, the database will have to contain a user called superadmin with the password `superadmin`
 
 ```bash
 .\initialize.ps1
@@ -27,8 +45,6 @@ This script will create a database called `SkiService` and a user called `DMLUse
 
 The database will be initialized with empty collections that contain a defined schema. The schemas can be found in the `mongosh/collections` directory of the project inside the `scripts` directory.
 
-### Finalizing the installation
-
 To fully secure your database ensure to enable authentication in the `mongod.cfg` file by adding the following lines:
 
 ```yaml
@@ -36,13 +52,13 @@ security:
   authorization: enabled
 ```
 
-Tbe database will have to be restarted for the changes to take effect.
+The database will have to be restarted for the changes to take effect.
 
 ## Backup & Restore
 
 to simplify the creation of a Backup or Restore there are scripts in place which can be used to create a backup of the database.
 
-To run any of these scripts ensure that you have the mongodb tools installed ([Tutorial](https://www.mongodb.com/docs/database-tools/installation/installation-windows/)) and that the folder is added to your `PATH` variable.
+To run any of these scripts ensure that you have the mongodb tools installed ([Tutorial](https://www.mongodb.com/docs/database-tools/installation/installation-windows/)) and that the folder is added to your `PATH` variable. If you are using docker you can skip this step.
 
 ### Backup
 
@@ -50,6 +66,9 @@ open a Powershell terminal in the `scripts` directory of the project and run the
 
 ```bash
 .\backup.ps1
+
+# if using docker run the command below instead
+.\backup.docker.ps1
 ```
 
 or right click on the file and select `Run with Powershell` if you are on a newer Windows version.
@@ -62,6 +81,9 @@ open a Powershell terminal in the `scripts` directory of the project and run the
 
 ```bash
 .\restore.ps1
+
+# if using docker run the command below instead
+.\restore.docker.ps1
 ```
 
 or right click on the file and select `Run with Powershell` if you are on a newer Windows version.

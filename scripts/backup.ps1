@@ -1,10 +1,14 @@
+param (
+    [string]$Port = 27017
+)
+
 $name = "backups/$(Get-Date -Format "yyyyMMdd_HHmmss").zip"
 
 New-Item -Path "../backups" -ItemType Directory -Force 
-mongodump /host:localhost /port:27017 /db:SkiService /dumpDbUsersAndRoles /archive:"../${name}" /username:superadmin /password:"superadmin" /authenticationDatabase:admin /gzip
+mongodump /host:localhost /port:$Port /db:SkiService /dumpDbUsersAndRoles /archive:"../${name}" /username:superadmin /password:"superadmin" /authenticationDatabase:admin /gzip
 
 if (!$?) {
-    mongodump /host:localhost /port:27017 /db:SkiService /dumpDbUsersAndRoles /archive:"../${name}" /gzip
+    mongodump /host:localhost /port:$Port /db:SkiService /dumpDbUsersAndRoles /archive:"../${name}" /gzip
 }
 
 if ($?) {

@@ -3,7 +3,6 @@ version: '3'
 services:
   redis:
     image: redis
-    container_name: my-redis
     ports:
       - "6379:6379"
     volumes:
@@ -11,7 +10,6 @@ services:
 
   redis-commander:
     image: rediscommander/redis-commander
-    container_name: my-redis-commander
     environment:
       - REDIS_HOSTS=local:redis:6379
     ports:
@@ -19,5 +17,33 @@ services:
     depends_on:
       - redis
 
+  mongodb:
+    image: mongo
+    ports:
+      - "17017:27017"
+    volumes:
+      - mongo-data:/data/db    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: superadmin
+      MONGO_INITDB_ROOT_PASSWORD: superadmin
+  
+  ski-service:
+    build: 
+      context: .
+      dockerfile: SkiServiceAPI/Dockerfile
+    ports:
+      - "8000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Databases__Redis__URL=redis://redis:6379
+      - Databases__MongoDB__URL=mongodb://DMLUser:verySecurePassword@mongodb:27017/?authSource=SkiService
+      - CORS__AllowedOrigins=http://127.0.0.1:8000,http://localhost:8000
+    volumes:
+      - ./.docker/flags:/flags
+    depends_on:
+      - redis
+      - mongodb
+
 volumes:
   redis-data:
+  mongo-data:

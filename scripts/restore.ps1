@@ -1,11 +1,15 @@
+param (
+    [string]$Port = 27017
+)
+
 $backupFiles = Get-ChildItem -Path "../backups" -Filter "*.zip"
 
 $selectedBackup = $backupFiles | Out-GridView -Title "Wählen Sie ein Backup zur Wiederherstellung" -OutputMode Single
 
 if ($null -ne $selectedBackup) {
-    mongorestore /host:localhost /port:27017 /archive:"../backups/$selectedBackup" /drop /db:SkiService /username:superadmin /password:"superadmin" /authenticationDatabase:admin /restoreDbUsersAndRoles /gzip
+    mongorestore /host:localhost /port:$Port /archive:"../backups/$selectedBackup" /drop /db:SkiService /username:superadmin /password:"superadmin" /authenticationDatabase:admin /restoreDbUsersAndRoles /gzip
     if (!$?) {
-        mongorestore /host:localhost /port:27017 /archive:"../backups/$selectedBackup" /drop /db:SkiService /restoreDbUsersAndRoles /gzip
+        mongorestore /host:localhost /port:$Port /archive:"../backups/$selectedBackup" /drop /db:SkiService /restoreDbUsersAndRoles /gzip
     }
 }
 
