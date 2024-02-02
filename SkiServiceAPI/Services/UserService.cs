@@ -158,6 +158,14 @@ namespace SkiServiceAPI.Services
                 opts.Items["IsOwner"] = IsOwnerOrAdmin(current);
             });
 
+            if (entity.Password != null)
+            {
+                _authService.CreatePasswordHash(entity.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+                current.PasswordHash = passwordHash;
+                current.PasswordSalt = passwordSalt;
+            }
+
             await _context.Users.Collection.ReplaceOneAsync(GetFilter(id), current);
 
             return Resolve(current);

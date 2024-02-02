@@ -1,7 +1,7 @@
 {
-	"id": "648a0225-d3bb-49d3-bd6f-71cad6508156",
+	"id": "564dcc27-20bb-4dab-8ccf-5b5c945f8cda",
 	"name": "SkiService-Management",
-	"timestamp": "2024-02-02T12:02:03.017Z",
+	"timestamp": "2024-02-02T17:12:39.312Z",
 	"collection_id": "18842395-8c7d34cf-b4e3-4211-b8d6-08ee54ec882c",
 	"folder_id": 0,
 	"environment_id": "18842395-59707c66-570a-4252-9a2c-5ac14361108d",
@@ -9,14 +9,14 @@
 	"delay": "100",
 	"persist": true,
 	"status": "finished",
-	"startedAt": "2024-02-02T12:01:55.095Z",
+	"startedAt": "2024-02-02T17:12:31.175Z",
 	"totalFail": 0,
 	"results": [
 		{
 			"id": "4583940f-df30-4827-8cd5-3747e2eeca92",
 			"name": "Mitarbeiter 1",
-			"url": "https://localhost:7137/api/users/login",
-			"time": 733,
+			"url": "http://localhost:8000/api/users/login",
+			"time": 1555,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -41,7 +41,7 @@
 				}
 			},
 			"times": [
-				733
+				1555
 			],
 			"allTests": [
 				{
@@ -54,8 +54,8 @@
 		{
 			"id": "3a486eba-3e3b-4f23-905a-ab52bc8bb16b",
 			"name": "Logout",
-			"url": "https://localhost:7137/api",
-			"time": 48,
+			"url": "http://localhost:8000/api",
+			"time": 81,
 			"responseCode": {
 				"code": 404,
 				"name": "Not Found"
@@ -70,7 +70,7 @@
 				}
 			},
 			"times": [
-				48
+				81
 			],
 			"allTests": [
 				{
@@ -81,8 +81,8 @@
 		{
 			"id": "b7ca0fea-ef3f-48e9-9c94-cf3aecdc2b25",
 			"name": "Superadmin",
-			"url": "https://localhost:7137/api/users/login",
-			"time": 59,
+			"url": "http://localhost:8000/api/users/login",
+			"time": 53,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -107,7 +107,7 @@
 				}
 			},
 			"times": [
-				59
+				53
 			],
 			"allTests": [
 				{
@@ -120,8 +120,8 @@
 		{
 			"id": "1f8783c6-53c5-482f-9529-1cce731f36f7",
 			"name": "Store Priority Ids",
-			"url": "https://localhost:7137/api/priorities",
-			"time": 82,
+			"url": "http://localhost:8000/api/priorities",
+			"time": 88,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -136,7 +136,7 @@
 				}
 			},
 			"times": [
-				82
+				88
 			],
 			"allTests": [
 				{
@@ -147,8 +147,8 @@
 		{
 			"id": "00b70f77-896f-46ff-bd8b-0b5523f5b9cf",
 			"name": "Store State Ids",
-			"url": "https://localhost:7137/api/states",
-			"time": 49,
+			"url": "http://localhost:8000/api/states",
+			"time": 33,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -163,7 +163,7 @@
 				}
 			},
 			"times": [
-				49
+				33
 			],
 			"allTests": [
 				{
@@ -174,8 +174,8 @@
 		{
 			"id": "93037d10-b497-4176-a8a0-b6837c8045ab",
 			"name": "Store Service Ids",
-			"url": "https://localhost:7137/api/services",
-			"time": 54,
+			"url": "http://localhost:8000/api/services",
+			"time": 36,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -190,7 +190,7 @@
 				}
 			},
 			"times": [
-				54
+				36
 			],
 			"allTests": [
 				{
@@ -201,8 +201,8 @@
 		{
 			"id": "b4e8b712-58cc-4532-ac5f-e19d0b99a203",
 			"name": "Store User Ids",
-			"url": "https://localhost:7137/api/users",
-			"time": 48,
+			"url": "http://localhost:8000/api/users",
+			"time": 44,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -217,7 +217,7 @@
 				}
 			},
 			"times": [
-				48
+				44
 			],
 			"allTests": [
 				{
@@ -228,8 +228,8 @@
 		{
 			"id": "6c0d0e6b-a7e7-4bff-bc99-8328b1fe83c1",
 			"name": "GetAll",
-			"url": "https://localhost:7137/api/users",
-			"time": 38,
+			"url": "http://localhost:8000/api/users",
+			"time": 7,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -249,7 +249,7 @@
 				}
 			},
 			"times": [
-				38
+				7
 			],
 			"allTests": [
 				{
@@ -261,8 +261,8 @@
 		{
 			"id": "5c3a0b48-092f-4498-b6d8-5af5d0635cea",
 			"name": "Create",
-			"url": "https://localhost:7137/api/users",
-			"time": 58,
+			"url": "http://localhost:8000/api/users",
+			"time": 27,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -282,7 +282,7 @@
 				}
 			},
 			"times": [
-				58
+				27
 			],
 			"allTests": [
 				{
@@ -294,8 +294,8 @@
 		{
 			"id": "8df51957-47f8-41f8-8e33-06b665d0a4be",
 			"name": "Me",
-			"url": "https://localhost:7137/api/users/me",
-			"time": 45,
+			"url": "http://localhost:8000/api/users/me",
+			"time": 10,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -315,7 +315,7 @@
 				}
 			},
 			"times": [
-				45
+				10
 			],
 			"allTests": [
 				{
@@ -327,8 +327,8 @@
 		{
 			"id": "2f5903fd-596b-42e5-bcc0-61f133762154",
 			"name": "UpdateById",
-			"url": "https://localhost:7137/api/users/65bcd9b514529746ebcb62b2",
-			"time": 56,
+			"url": "http://localhost:8000/api/users/65bd2282fe01b4530f49cdc8",
+			"time": 35,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -348,7 +348,7 @@
 				}
 			},
 			"times": [
-				56
+				35
 			],
 			"allTests": [
 				{
@@ -360,8 +360,8 @@
 		{
 			"id": "579460e1-26d7-45a6-a9c1-d054b9f6c8e9",
 			"name": "GetById",
-			"url": "https://localhost:7137/api/users/65bcd9b514529746ebcb62b2",
-			"time": 43,
+			"url": "http://localhost:8000/api/users/65bd2282fe01b4530f49cdc8",
+			"time": 9,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -381,7 +381,7 @@
 				}
 			},
 			"times": [
-				43
+				9
 			],
 			"allTests": [
 				{
@@ -393,8 +393,8 @@
 		{
 			"id": "e31c74e2-f6ca-40d9-86c9-ed96d0fb839e",
 			"name": "Unlock",
-			"url": "https://localhost:7137/api/users/65bcd9b514529746ebcb62b2/unlock",
-			"time": 53,
+			"url": "http://localhost:8000/api/users/65bd2282fe01b4530f49cdc8/unlock",
+			"time": 21,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -409,7 +409,7 @@
 				}
 			},
 			"times": [
-				53
+				21
 			],
 			"allTests": [
 				{
@@ -420,8 +420,8 @@
 		{
 			"id": "5a1dfce3-1a17-4ef8-8cd2-455a3a6ede04",
 			"name": "DeleteById",
-			"url": "https://localhost:7137/api/users/65bcd9b514529746ebcb62b2",
-			"time": 45,
+			"url": "http://localhost:8000/api/users/65bd2282fe01b4530f49cdc8",
+			"time": 14,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -441,7 +441,7 @@
 				}
 			},
 			"times": [
-				45
+				14
 			],
 			"allTests": [
 				{
@@ -453,8 +453,8 @@
 		{
 			"id": "9f3ed47d-61f1-4eab-a314-199b9705c8e6",
 			"name": "Create",
-			"url": "https://localhost:7137/api/orders",
-			"time": 75,
+			"url": "http://localhost:8000/api/orders",
+			"time": 49,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -474,7 +474,7 @@
 				}
 			},
 			"times": [
-				75
+				49
 			],
 			"allTests": [
 				{
@@ -486,8 +486,8 @@
 		{
 			"id": "33b8c945-1b8a-4caf-b0a2-7259928d7dd6",
 			"name": "GetAll",
-			"url": "https://localhost:7137/api/orders",
-			"time": 68,
+			"url": "http://localhost:8000/api/orders",
+			"time": 24,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -507,7 +507,7 @@
 				}
 			},
 			"times": [
-				68
+				24
 			],
 			"allTests": [
 				{
@@ -519,8 +519,8 @@
 		{
 			"id": "38a2830e-22ad-48b4-8b12-d37760b71cfc",
 			"name": "GetById",
-			"url": "https://localhost:7137/api/orders/65bcd9b614529746ebcb62b3",
-			"time": 77,
+			"url": "http://localhost:8000/api/orders/65bd2283fe01b4530f49cdc9",
+			"time": 11,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -540,7 +540,7 @@
 				}
 			},
 			"times": [
-				77
+				11
 			],
 			"allTests": [
 				{
@@ -552,8 +552,8 @@
 		{
 			"id": "ab65e0cb-16eb-4f42-b8ea-201002249e15",
 			"name": "UpdateById",
-			"url": "https://localhost:7137/api/orders/65bcd9b614529746ebcb62b3",
-			"time": 59,
+			"url": "http://localhost:8000/api/orders/65bd2283fe01b4530f49cdc9",
+			"time": 30,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -578,7 +578,7 @@
 				}
 			},
 			"times": [
-				59
+				30
 			],
 			"allTests": [
 				{
@@ -591,8 +591,8 @@
 		{
 			"id": "8c2904db-9082-4072-b9cb-da78df8cf19e",
 			"name": "DeleteById",
-			"url": "https://localhost:7137/api/orders/65bcd9b614529746ebcb62b3",
-			"time": 44,
+			"url": "http://localhost:8000/api/orders/65bd2283fe01b4530f49cdc9",
+			"time": 10,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -612,7 +612,7 @@
 				}
 			},
 			"times": [
-				44
+				10
 			],
 			"allTests": [
 				{
@@ -624,8 +624,8 @@
 		{
 			"id": "bc45528c-8e0d-4df9-b59b-1bd09ba87be4",
 			"name": "GetByUser",
-			"url": "https://localhost:7137/api/orders/user/65bcd7d8aa0b5dffb01ad990",
-			"time": 47,
+			"url": "http://localhost:8000/api/orders/user/65baa8ce591ce541e27903aa",
+			"time": 13,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -645,7 +645,7 @@
 				}
 			},
 			"times": [
-				47
+				13
 			],
 			"allTests": [
 				{
@@ -657,8 +657,8 @@
 		{
 			"id": "e87fc1fb-4955-4228-ad5f-9dc449b3362f",
 			"name": "GetByState",
-			"url": "https://localhost:7137/api/orders/state/65bcd850aa0b5dffb01ad997",
-			"time": 48,
+			"url": "http://localhost:8000/api/orders/state/65bac2748ccbf2dc79548846",
+			"time": 18,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -678,7 +678,7 @@
 				}
 			},
 			"times": [
-				48
+				18
 			],
 			"allTests": [
 				{
@@ -690,8 +690,8 @@
 		{
 			"id": "f259e8b6-dae2-47cb-8f9e-37a2e3274aa7",
 			"name": "GetByService",
-			"url": "https://localhost:7137/api/orders/service/65bcd851aa0b5dffb01ad998",
-			"time": 47,
+			"url": "http://localhost:8000/api/orders/service/65bac27374815d65e1a31bfd",
+			"time": 17,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -711,7 +711,7 @@
 				}
 			},
 			"times": [
-				47
+				17
 			],
 			"allTests": [
 				{
@@ -723,8 +723,8 @@
 		{
 			"id": "0de0db61-9bf9-4007-8078-982fc34a710a",
 			"name": "GetByPriority",
-			"url": "https://localhost:7137/api/orders/priority/65bac2721f0ce5a1a2b5f384",
-			"time": 45,
+			"url": "http://localhost:8000/api/orders/priority/65bac2721f0ce5a1a2b5f382",
+			"time": 14,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -744,7 +744,7 @@
 				}
 			},
 			"times": [
-				45
+				14
 			],
 			"allTests": [
 				{
@@ -756,8 +756,8 @@
 		{
 			"id": "fd5003fd-9879-48fe-ba67-a7edf9baa7ab",
 			"name": "GetAll",
-			"url": "https://localhost:7137/api/states",
-			"time": 38,
+			"url": "http://localhost:8000/api/states",
+			"time": 6,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -777,7 +777,7 @@
 				}
 			},
 			"times": [
-				38
+				6
 			],
 			"allTests": [
 				{
@@ -789,8 +789,8 @@
 		{
 			"id": "5d3759fc-31ed-4a4e-a743-9ceb68c5f895",
 			"name": "Create",
-			"url": "https://localhost:7137/api/states",
-			"time": 46,
+			"url": "http://localhost:8000/api/states",
+			"time": 18,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -810,7 +810,7 @@
 				}
 			},
 			"times": [
-				46
+				18
 			],
 			"allTests": [
 				{
@@ -822,8 +822,8 @@
 		{
 			"id": "642a5e2d-5d53-4c77-ba86-0fe011d4fc80",
 			"name": "GetById",
-			"url": "https://localhost:7137/api/states/65bcd9b814529746ebcb62b4",
-			"time": 37,
+			"url": "http://localhost:8000/api/states/65bd2285fe01b4530f49cdca",
+			"time": 7,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -843,7 +843,7 @@
 				}
 			},
 			"times": [
-				37
+				7
 			],
 			"allTests": [
 				{
@@ -855,8 +855,8 @@
 		{
 			"id": "8c4aaf83-d045-4798-a493-2602aff92fa9",
 			"name": "UpdateById",
-			"url": "https://localhost:7137/api/states/65bcd9b814529746ebcb62b4",
-			"time": 52,
+			"url": "http://localhost:8000/api/states/65bd2285fe01b4530f49cdca",
+			"time": 15,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -876,7 +876,7 @@
 				}
 			},
 			"times": [
-				52
+				15
 			],
 			"allTests": [
 				{
@@ -888,8 +888,8 @@
 		{
 			"id": "e3e45ac7-ca09-4612-976b-b5f0ec4d009c",
 			"name": "DeleteById",
-			"url": "https://localhost:7137/api/states/65bcd9b814529746ebcb62b4",
-			"time": 47,
+			"url": "http://localhost:8000/api/states/65bd2285fe01b4530f49cdca",
+			"time": 9,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -909,7 +909,7 @@
 				}
 			},
 			"times": [
-				47
+				9
 			],
 			"allTests": [
 				{
@@ -921,8 +921,8 @@
 		{
 			"id": "a4399a35-6798-49d6-b273-d1415886d79d",
 			"name": "GetAll",
-			"url": "https://localhost:7137/api/services",
-			"time": 36,
+			"url": "http://localhost:8000/api/services",
+			"time": 7,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -942,7 +942,7 @@
 				}
 			},
 			"times": [
-				36
+				7
 			],
 			"allTests": [
 				{
@@ -954,8 +954,8 @@
 		{
 			"id": "cd5699de-4fdc-4cca-9c49-9da93cdf41ae",
 			"name": "Create",
-			"url": "https://localhost:7137/api/services",
-			"time": 54,
+			"url": "http://localhost:8000/api/services",
+			"time": 23,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -975,7 +975,7 @@
 				}
 			},
 			"times": [
-				54
+				23
 			],
 			"allTests": [
 				{
@@ -987,8 +987,8 @@
 		{
 			"id": "f356d2fa-a8c8-4bcc-8750-4e13bdb3fbee",
 			"name": "GetById",
-			"url": "https://localhost:7137/api/services/65bcd9b914529746ebcb62b5",
-			"time": 44,
+			"url": "http://localhost:8000/api/services/65bd2286fe01b4530f49cdcb",
+			"time": 8,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -1008,7 +1008,7 @@
 				}
 			},
 			"times": [
-				44
+				8
 			],
 			"allTests": [
 				{
@@ -1020,8 +1020,8 @@
 		{
 			"id": "235e712c-75ba-460c-b6e6-8509af40be16",
 			"name": "UpdateById",
-			"url": "https://localhost:7137/api/services/65bcd9b914529746ebcb62b5",
-			"time": 46,
+			"url": "http://localhost:8000/api/services/65bd2286fe01b4530f49cdcb",
+			"time": 18,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -1041,7 +1041,7 @@
 				}
 			},
 			"times": [
-				46
+				18
 			],
 			"allTests": [
 				{
@@ -1053,8 +1053,8 @@
 		{
 			"id": "093e9a3b-ff0d-4b84-8223-d553b13d3f87",
 			"name": "DeleteById",
-			"url": "https://localhost:7137/api/services/65bcd9b914529746ebcb62b5",
-			"time": 45,
+			"url": "http://localhost:8000/api/services/65bd2286fe01b4530f49cdcb",
+			"time": 12,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -1074,7 +1074,7 @@
 				}
 			},
 			"times": [
-				45
+				12
 			],
 			"allTests": [
 				{
@@ -1086,8 +1086,8 @@
 		{
 			"id": "c5756fee-8398-4c05-8f4c-fe6f77f8fbfb",
 			"name": "GetAll",
-			"url": "https://localhost:7137/api/priorities",
-			"time": 50,
+			"url": "http://localhost:8000/api/priorities",
+			"time": 8,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -1107,7 +1107,7 @@
 				}
 			},
 			"times": [
-				50
+				8
 			],
 			"allTests": [
 				{
@@ -1119,8 +1119,8 @@
 		{
 			"id": "89a91229-a5cc-4cad-94a0-359ce61a817e",
 			"name": "Create",
-			"url": "https://localhost:7137/api/priorities",
-			"time": 48,
+			"url": "http://localhost:8000/api/priorities",
+			"time": 16,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -1140,7 +1140,7 @@
 				}
 			},
 			"times": [
-				48
+				16
 			],
 			"allTests": [
 				{
@@ -1152,8 +1152,8 @@
 		{
 			"id": "eb6c1f98-e38c-4e52-b093-bc68de3e987c",
 			"name": "GetById",
-			"url": "https://localhost:7137/api/priorities/65bcd9ba14529746ebcb62b6",
-			"time": 50,
+			"url": "http://localhost:8000/api/priorities/65bd2286fe01b4530f49cdcc",
+			"time": 9,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -1173,7 +1173,7 @@
 				}
 			},
 			"times": [
-				50
+				9
 			],
 			"allTests": [
 				{
@@ -1185,8 +1185,8 @@
 		{
 			"id": "6a682ec3-4fbe-47e0-af7d-8d5577630d7d",
 			"name": "UpdateById",
-			"url": "https://localhost:7137/api/priorities/65bcd9ba14529746ebcb62b6",
-			"time": 55,
+			"url": "http://localhost:8000/api/priorities/65bd2286fe01b4530f49cdcc",
+			"time": 15,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -1206,7 +1206,7 @@
 				}
 			},
 			"times": [
-				55
+				15
 			],
 			"allTests": [
 				{
@@ -1218,8 +1218,8 @@
 		{
 			"id": "d75d5856-c0ac-4667-8a51-42e6489a1ae0",
 			"name": "DeleteById",
-			"url": "https://localhost:7137/api/priorities/65bcd9ba14529746ebcb62b6",
-			"time": 41,
+			"url": "http://localhost:8000/api/priorities/65bd2286fe01b4530f49cdcc",
+			"time": 13,
 			"responseCode": {
 				"code": 200,
 				"name": "OK"
@@ -1239,7 +1239,7 @@
 				}
 			},
 			"times": [
-				41
+				13
 			],
 			"allTests": [
 				{
@@ -1250,7 +1250,7 @@
 		}
 	],
 	"count": 1,
-	"totalTime": 2610,
+	"totalTime": 2383,
 	"collection": {
 		"requests": [
 			{

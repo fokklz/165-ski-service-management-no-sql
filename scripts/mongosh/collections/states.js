@@ -1,21 +1,22 @@
 const schema = {
-  bsonType: "object",
-  required: ["name"],
+  bsonType: 'object',
+  required: ['name'],
   properties: {
     _id: {
-      bsonType: "objectId"
+      bsonType: 'objectId',
     },
     name: {
-      bsonType: "string"
+      bsonType: 'string',
+      minLength: 3,
     },
     is_deleted: {
-      bsonType: "bool"
-    }
-  }
+      bsonType: 'bool',
+    },
+  },
 };
 
-db.getSiblingDB('SkiService').createCollection("states", {
+db.getSiblingDB('SkiService').createCollection('states', {
   validator: {
-    $jsonSchema: schema
-  }
+    $jsonSchema: schema,
+  },
 });

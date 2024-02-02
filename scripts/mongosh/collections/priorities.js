@@ -7,9 +7,12 @@ const schema = {
     },
     days: {
       bsonType: 'int',
+      minimum: 1,
+      maximum: 365,
     },
     name: {
       bsonType: 'string',
+      minLength: 3,
     },
     is_deleted: {
       bsonType: 'bool',

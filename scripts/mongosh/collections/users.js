@@ -14,6 +14,7 @@ const schema = {
     },
     username: {
       bsonType: 'string',
+      pattern: '^[a-zA-Z0-9._ -]{3,}$',
     },
     password_hash: {
       bsonType: 'binData',
@@ -29,6 +30,8 @@ const schema = {
     },
     login_attempts: {
       bsonType: 'int',
+      minimum: 0,
+      maximum: 3,
     },
     refresh_token: {
       bsonType: ['string', 'null'],

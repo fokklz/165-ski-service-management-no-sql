@@ -1905,7 +1905,7 @@
 	"variable": [
 		{
 			"key": "HOST",
-			"value": "https://localhost:7137",
+			"value": "http://localhost:8000",
 			"type": "string"
 		},
 		{
